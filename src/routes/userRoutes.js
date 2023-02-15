@@ -3,7 +3,7 @@ import { registerUser, loginUser } from '../controllers/userController'
 
 const userRouter = Router()
 
-userRouter.get('/', registerUser)
-userRouter.get('/login', loginUser)
+userRouter.post('/', registerUser)
+userRouter.post('/login', loginUser)
 
 module.exports = userRouter

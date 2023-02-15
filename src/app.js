@@ -1,8 +1,11 @@
 import express from 'express'
-import  userRouter from './routes/userRoutes.js'
+import userRouter from './routes/userRoutes.js'
 
 const app = express()
 
-app.use('/user', userRouter)
+//body parser json
+app.use(express.json())
+
+app.use('/api/user', userRouter)
 
 module.exports = app
