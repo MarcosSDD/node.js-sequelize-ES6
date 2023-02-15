@@ -5,7 +5,9 @@
   "author": "Marcos Saldivia D. <marcos.saldivia@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "lint": "eslint .",
+    "format": "prettier --write \"**/*.+(js|md|)\""
   },
   "dependencies": {
     "dotenv": "^16.0.3",

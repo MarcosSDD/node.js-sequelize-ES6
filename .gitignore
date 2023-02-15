@@ -54,3 +54,6 @@ Thumbs.db
 venv/
 .venv
 .env
+
+# Errors
+yarn-error.log
