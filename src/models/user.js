@@ -1,4 +1,6 @@
 'use strict'
+import generateToken from '../helpers/generateToken.js'
+
 const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -57,6 +59,7 @@ module.exports = (sequelize, DataTypes) => {
       token: {
         type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: generateToken(),
       },
       confirmed: {
         type: DataTypes.BOOLEAN,

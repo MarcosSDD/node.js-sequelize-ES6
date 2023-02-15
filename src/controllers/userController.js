@@ -1,4 +1,5 @@
 import { User } from '../models/'
+import emailRegister from '../helpers/emailRegister.js'
 
 const registerUser = async (req, res) => {
   const { name, surname, email, password } = req.body
@@ -18,6 +19,12 @@ const registerUser = async (req, res) => {
     })
 
     //enviar E-mail confirmación
+    emailRegister({
+      email,
+      name,
+      surname,
+      token: saveUser.token,
+    })
 
     res.status(201).json({
       id: saveUser.id,
