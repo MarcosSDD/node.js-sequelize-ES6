@@ -1,5 +1,6 @@
 'use strict'
 import generateToken from '../helpers/generateToken.js'
+import bcrypt from "bcrypt";
 
 const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
@@ -11,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+    }
+    validPassword (password) {
+      return bcrypt.compareSync(password, this.password);
     }
   }
   User.init(
@@ -69,6 +73,25 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
+      hooks:{
+        beforeCreate: async (user) => {
+          const salt =  await bcrypt.genSalt(10);
+          user.password = await bcrypt.hashSync( user.password, salt );
+        },
+        beforeUpdate: async (user) => {
+          if (user._changed.has("password")) {
+            const salt = await bcrypt.genSalt(10);
+            user.password = await bcrypt.hashSync( user.password, salt);
+          }
+        }
+      },
+      scopes: {
+        sendDataUser: {
+            attributes: {
+                exclude : ['updatedAt','createdAt','password','token','confirmed']
+            }
+        }
+      },
       sequelize,
       modelName: 'User',
     }

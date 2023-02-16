@@ -11,7 +11,7 @@ const emailRegister = async (dataMail) => {
   })
 
   const { email, name, surname, token } = dataMail
-
+  console.log(email, name, surname, token)
   //Enviar el email
   const info = await transporter.sendMail({
     from: 'API Service - Administrador de Usuarios',

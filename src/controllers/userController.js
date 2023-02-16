@@ -1,5 +1,6 @@
 import { User } from '../models/'
 import emailRegister from '../helpers/emailRegister.js'
+import generateJWT from '../helpers/generateJWT.js'
 
 const registerUser = async (req, res) => {
   const { name, surname, email, password } = req.body
@@ -39,24 +40,58 @@ const registerUser = async (req, res) => {
   }
 }
 
+const confirmUser = async (req,res) => {
+  const { token } = req.params;
+
+  const userConfirm = await User.findOne({ where :{ token } });
+  
+  if (!userConfirm){
+      const error = new Error("Invalid Token");
+      return res.status(401).json({ msg: error.message });
+  }
+  try {
+      userConfirm.token = null;
+      userConfirm.confirmed = true;
+      await userConfirm.save();
+      res.status(200).json({msg:" User confirmed and created successfully"})
+  } catch (error) {
+      console.log(error)
+  }
+
+}
+
 const loginUser = async (req, res) => {
   const { email, password } = req.body
 
-  // Validate User Exists
-  const userLogin = await User.findOne({ where: { email } })
-  if (!userLogin) {
-    const error = new Error('User not found')
-    return res.status(404).json({ msg: error.message })
-  }
+    // Validate User Exists
+    const userLogin = await User.findOne({ where :{ email } });
+    if (!userLogin){
+        const error = new Error("Unregistered user");
+        return res.status(404).json({ msg: error.message });
+    }
+    
+    // Confirmed account
+    if (!userLogin.confirmed) {
+        const error = new Error("Your account has not been confirmed");
+        return res.status(401).json({ msg: error.message });
+    }
 
-  res.status(200).json({
-    id: userLogin.id,
-    name: userLogin.name,
-    surname: userLogin.surname,
-  })
+    // Validation Pass
+    if( await userLogin.validPassword(password) ){
+        res.status(200).json({
+            id:userLogin.id,
+            name: userLogin.name,
+            surname: userLogin.surname,
+            token: generateJWT(userLogin.id),
+        })
+    } else {
+        const error = new Error("Invalid password");
+        return res.status(403).json({ msg: error.message });
+    }
 }
 
 module.exports = {
   registerUser,
+  confirmUser,
   loginUser,
 }
