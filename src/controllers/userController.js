@@ -158,6 +158,74 @@ const newPassword = async (req, res)=> {
     
 }
 
+const profileUser = async (req, res) => {
+	const { id } = req.params
+
+	const userProfile = await User.scope('sendDataUser').findByPk(id)
+	if (!userProfile) {
+		const error = new Error('No user found')
+		return res.status(400).json({ msg: error.message })
+	}
+
+	const { user } = req
+	res.status(200).json(user)
+}
+
+const updateUser = async (req, res) => {
+	const { id } = req.params
+	const { email } = req.body
+
+	const userToUp = await User.scope('sendDataUser').findByPk(id)
+	if (!userToUp) {
+		const error = new Error('No user found')
+		return res.status(400).json({ msg: error.message })
+	}
+
+	if (userToUp.email !== email) {
+		const emailExists = await User.findOne({ where: { email } })
+
+		if (emailExists) {
+			const error = new Error('That email is already in use')
+			return res.status(400).json({ msg: error.message })
+		}
+	}
+
+	try {
+		userToUp.name = req.body.name
+		userToUp.surname = req.body.surname
+		userToUp.birthday = req.body.birthday
+		userToUp.gender = req.body.gender
+		userToUp.email = req.body.email
+		userToUp.username = req.body.username
+
+		const userUp = await userToUp.save()
+		res.status(200).json(userUp)
+	} catch (error) {
+		console.log(error)
+	}
+}
+
+const updatePassword = async (req, res) => {
+	const { oldPassword, password } = req.body
+	const { id } = req.user
+
+	console.log('acato')
+	const userChanged = await User.findByPk(id)
+	if (!userChanged) {
+		const error = new Error('Unregistered user')
+		return res.status(400).json({ msg: error.message })
+	}
+
+	if (await userChanged.validPassword(oldPassword)) {
+		// Store the new password
+		userChanged.password = password
+		await userChanged.save()
+		res.status(200).json({ msg: 'Password Updated Successfully' })
+	} else {
+		const error = new Error('Invalid password')
+		return res.status(400).json({ msg: error.message })
+	}
+}
 
 module.exports = {
 	registerUser,
@@ -166,4 +234,7 @@ module.exports = {
 	forgetPassword,
 	checkTokenForPassword,
 	newPassword,
+	profileUser,
+	updateUser,
+	updatePassword
 }
