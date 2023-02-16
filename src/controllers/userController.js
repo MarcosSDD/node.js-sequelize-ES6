@@ -136,10 +136,34 @@ const checkTokenForPassword = async (req, res) => {
 	}
 }
 
+const newPassword = async (req, res)=> {
+    const { token  } = req.params;
+    const { password } = req.body;
+    
+    const userConfirm = await User.findOne({ where :{ token } });
+    
+    if (!userConfirm){
+        const error = new Error("Invalid Token");
+        return res.status(401).json({ msg: error.message });
+    }
+
+    try {
+        userConfirm.token = null;
+        userConfirm.password = password;
+        await userConfirm.save();
+        res.status(200).json({ msg:"Password changed successfully"});
+    } catch (error) {
+        console.log(error)
+    }
+    
+}
+
+
 module.exports = {
 	registerUser,
 	confirmUser,
 	loginUser,
 	forgetPassword,
 	checkTokenForPassword,
+	newPassword,
 }
