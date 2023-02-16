@@ -1,4 +1,6 @@
 import { Router } from 'express'
+import checkAuth from '../middleware/authMiddleware.js'
+
 import {
 	registerUser,
 	loginUser,
