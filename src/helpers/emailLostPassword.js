@@ -1,4 +1,5 @@
 import mailer from 'nodemailer'
+import logger from '../../logger'
 
 const emailLostPassword = async (dataMail) => {
 	const transporter = mailer.createTransport({
@@ -26,7 +27,7 @@ const emailLostPassword = async (dataMail) => {
       `,
 	})
 
-	console.log('Mensaje enviado: %s', info.messageId)
+	logger.info(`Mensaje enviado: ${info.messageId}`)
 }
 
 export default emailLostPassword

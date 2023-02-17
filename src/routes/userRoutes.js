@@ -10,7 +10,7 @@ import {
 	newPassword,
 	profileUser,
 	updateUser,
-	updatePassword
+	updatePassword,
 } from '../controllers/userController'
 
 const userRouter = Router()

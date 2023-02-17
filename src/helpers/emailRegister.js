@@ -1,4 +1,5 @@
 import mailer from 'nodemailer'
+import logger from '../../logger'
 
 const emailRegister = async (dataMail) => {
 	const transporter = mailer.createTransport({
@@ -11,7 +12,6 @@ const emailRegister = async (dataMail) => {
 	})
 
 	const { email, name, surname, token } = dataMail
-	console.log(email, name, surname, token)
 	//Enviar el email
 	const info = await transporter.sendMail({
 		from: 'API Service - Administrador de Usuarios',
@@ -26,7 +26,7 @@ const emailRegister = async (dataMail) => {
       `,
 	})
 
-	console.log('Mensaje enviado: %s', info.messageId)
+	logger.info(`Mensaje enviado: ${info.messageId}`)
 }
 
 export default emailRegister
