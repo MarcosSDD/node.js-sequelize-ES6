@@ -1,31 +1,22 @@
 import { Router } from 'express'
-import checkAuth from '../middleware/authMiddleware.js'
 
-import {
-	registerUser,
-	loginUser,
-	confirmUser,
-	forgetPassword,
-	checkTokenForPassword,
-	newPassword,
-	profileUser,
-	updateUser,
-	updatePassword,
-} from '../controllers/userController'
+import checkAuth from '../middleware/authMiddleware.js'
+import { userController }  from '../controllers/'
+import { validUser }  from '../validations/'
 
 const userRouter = Router()
 
 //Public Area
-userRouter.post('/', registerUser)
-userRouter.get('/confirmed/:token', confirmUser)
-userRouter.post('/login', loginUser)
-userRouter.post('/forget-password', forgetPassword)
-userRouter.get('/forget-password/:token', checkTokenForPassword)
-userRouter.post('/forget-password/:token', newPassword)
+userRouter.post('/', validUser, userController.registerUser)
+userRouter.get('/confirmed/:token', userController.confirmUser)
+userRouter.post('/login', userController.loginUser)
+userRouter.post('/forget-password', userController.forgetPassword)
+userRouter.get('/forget-password/:token', userController.checkTokenForPassword)
+userRouter.post('/forget-password/:token', userController.newPassword)
 
 //Private Area
-userRouter.get('/:id', checkAuth, profileUser)
-userRouter.put('/:id', checkAuth, updateUser)
-userRouter.patch('/update-password', checkAuth, updatePassword)
+userRouter.get('/:id', checkAuth, userController.profileUser)
+userRouter.put('/:id', checkAuth, userController.updateUser)
+userRouter.patch('/update-password', checkAuth, userController.updatePassword)
 
-module.exports = userRouter
+export default  userRouter 

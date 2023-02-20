@@ -1,7 +1,8 @@
 import express from 'express'
-import userRouter from './routes/userRoutes.js'
-import logger from '../logger/'
 import cors from 'cors'
+
+import router from './routes/'
+import logger from '../logger/'
 
 const app = express()
 
@@ -25,6 +26,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use('/api/user', userRouter)
+app.use('/api/', router)
 
 module.exports ={ app, logger }    

@@ -245,7 +245,7 @@ const updatePassword = async (req, res) => {
 	}
 }
 
-module.exports = {
+export {
 	registerUser,
 	confirmUser,
 	loginUser,
