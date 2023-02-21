@@ -9,15 +9,11 @@ const app = express()
 //body parser json
 app.use(express.json())
 
-const allowedDomains = [process.env.FRONTEND_URL]
+const allowedDomains = process.env.ALLOWED_HOSTS.split(', ')
 
 const corsOptions = {
 	origin: function (origin, callback) {
-		if (!origin) {
-			//for bypassing postman req with  no origin
-			return callback(null, true)
-		}
-		if (allowedDomains.indexOf(origin) !== -1) {
+		if (!origin || allowedDomains.indexOf(origin) !== -1) {
 			callback(null, true)
 		} else {
 			callback(new Error('Not allowed by CORS'))

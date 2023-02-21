@@ -5,7 +5,7 @@ services:
         container_name: swagger_ui_container
         restart: always
         volumes:
-          - ./doc:/usr/share/nginx/html/doc
+          - ../doc:/usr/share/nginx/html/doc
         environment:
          API_URL: doc/swagger.json
          BASE_URL: /swagger

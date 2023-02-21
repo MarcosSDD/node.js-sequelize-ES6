@@ -15,16 +15,16 @@ const checkAuth = async (req, res, next) => {
 			req.user = await User.scope('sendDataUser').findByPk(decoded.id)
 			return next()
 		} catch (error) {
-			const errorMsg = new Error('Invalid Token')
+			const errorMsg = new Error('Invalid Web Token')
 			logger.error(error)
 			return res.status(403).json({ msg: errorMsg.message })
 		}
 	}
 
 	if (!token) {
-		const error = new Error('Invalid or non-existent token')
+		const error = new Error('Invalid or non-existent web token')
 		logger.error(error)
-		res.status(403).json({ msg: error.message })
+		res.status(401).json({ msg: error.message })
 	}
 
 	next()

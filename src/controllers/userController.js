@@ -139,7 +139,7 @@ const checkTokenForPassword = async (req, res) => {
 	const tokenConfirm = await User.findOne({ where: { token } })
 
 	if (tokenConfirm) {
-		res.json({ msg: 'Valid token and user exists' })
+		res.status(200).json({ msg: 'Valid token and user exists' })
 	} else {
 		const error = new Error('Invalid Token')
 		logger.error(error)
@@ -177,7 +177,7 @@ const profileUser = async (req, res) => {
 	if (!userProfile) {
 		const error = new Error('No user found')
 		logger.error(error)
-		return res.status(400).json({ msg: error.message })
+		return res.status(404).json({ msg: error.message })
 	}
 
 	const { user } = req
@@ -192,7 +192,7 @@ const updateUser = async (req, res) => {
 	if (!userToUp) {
 		const error = new Error('No user found')
 		logger.error(error)
-		return res.status(400).json({ msg: error.message })
+		return res.status(404).json({ msg: error.message })
 	}
 
 	if (userToUp.email !== email) {
@@ -229,7 +229,7 @@ const updatePassword = async (req, res) => {
 	if (!userChanged) {
 		const error = new Error('Unregistered user')
 		logger.error(error)
-		return res.status(400).json({ msg: error.message })
+		return res.status(404).json({ msg: error.message })
 	}
 
 	if (await userChanged.validPassword(oldPassword)) {

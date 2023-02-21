@@ -20,7 +20,7 @@ const emailRegister = async (dataMail) => {
 		text: 'Comprueba tu cuenta ',
 		html: `<p>Hola: ${name} ${surname}, comprueba tu cuenta.</p>
           <p>Tu cuenta ya esta lista, solo debes comprobarla en el siguiente enlace:
-          <a href="${process.env.FRONTEND_URL}/confirmed/${token}">Comprobar Cuenta</a> </p>
+          <a href="${process.env.FRONTEND_URL}/api/user/confirmed/${token}">Comprobar Cuenta</a> </p>
   
           <p>Si tu no creaste esta cuenta, puedes ignorar este mensaje</p>
       `,
