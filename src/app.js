@@ -12,20 +12,21 @@ app.use(express.json())
 const allowedDomains = [process.env.FRONTEND_URL]
 
 const corsOptions = {
-  origin: function (origin, callback) {
-    if(!origin){  //for bypassing postman req with  no origin
-      return callback(null, true);
-    }
-    if (allowedDomains.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-};
+	origin: function (origin, callback) {
+		if (!origin) {
+			//for bypassing postman req with  no origin
+			return callback(null, true)
+		}
+		if (allowedDomains.indexOf(origin) !== -1) {
+			callback(null, true)
+		} else {
+			callback(new Error('Not allowed by CORS'))
+		}
+	},
+}
 
-app.use(cors(corsOptions));
+app.use(cors(corsOptions))
 
 app.use('/api/', router)
 
-module.exports ={ app, logger }    
+module.exports = { app, logger }

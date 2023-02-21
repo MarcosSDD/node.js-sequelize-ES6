@@ -1,5 +1,3 @@
-import * as userController  from './userController'
+import * as userController from './userController'
 
-export  { 
-    userController 
-}
+export { userController }

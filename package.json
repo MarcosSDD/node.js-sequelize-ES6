@@ -15,7 +15,9 @@
     "db:seed:undo": "npx sequelize db:seed:undo",
     "db:seed:undo:all": "npx sequelize db:seed:undo:all",
     "dev": "nodemon server.js",
-    "start": "node server.js",
+    "docker:swagger": "docker compose -f 'docker/docker-compose.swagger.yml' up",
+    "docker:db": "docker compose -f 'docker/docker-compose.db.yml' up",
+    "start": "NODE_ENV=production pm2 start server.js",
     "lint": "eslint .",
     "format": "prettier --write \"**/*.+(js|md|)\""
   },

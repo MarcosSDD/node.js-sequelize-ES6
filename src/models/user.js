@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
 		 * static associate(models) {
 		 *	// define association here
 		 *  }
-		*/
+		 */
 		validPassword(password) {
 			return bcrypt.compareSync(password, this.password)
 		}

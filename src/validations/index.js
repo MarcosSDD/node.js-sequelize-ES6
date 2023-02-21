@@ -1,5 +1,3 @@
-import  validUser  from './userValidator'
+import validUser from './userValidator'
 
-export  { 
-    validUser
-}
+export { validUser }

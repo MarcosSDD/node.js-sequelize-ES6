@@ -5,7 +5,6 @@ import emailLostPassword from '../helpers/emailLostPassword.js'
 import generateJWT from '../helpers/generateJWT.js'
 import generateToken from '../helpers/generateToken'
 
-
 const registerUser = async (req, res) => {
 	const { name, surname, email, password } = req.body
 
@@ -218,7 +217,7 @@ const updateUser = async (req, res) => {
 		res.status(200).json(userUp)
 	} catch (error) {
 		logger.error(error.errors)
-		return res.status(500).json({ error: error.message })	
+		return res.status(500).json({ error: error.message })
 	}
 }
 

@@ -1,0 +1,20 @@
+version: '3.9'
+services:
+      mysql:
+        image: mysql:8
+        container_name: db_mysql
+        restart: always
+        volumes:
+          - db-data:/var/lib/mysql
+        environment:
+          - MYSQL_ROOT_PASSWORD=SecretPass001
+          - MYSQL_DATABASE=api_service
+        ports:
+          - "3306:3306"
+        command: [
+            '--wait_timeout=28800',
+            '--max_allowed_packet=32505856'
+        ]
+volumes:
+    db-data:
+        external: false

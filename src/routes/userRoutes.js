@@ -1,8 +1,8 @@
 import { Router } from 'express'
 
 import checkAuth from '../middleware/authMiddleware.js'
-import { userController }  from '../controllers/'
-import { validUser }  from '../validations/'
+import { userController } from '../controllers/'
+import { validUser } from '../validations/'
 
 const userRouter = Router()
 
@@ -19,4 +19,4 @@ userRouter.get('/:id', checkAuth, userController.profileUser)
 userRouter.put('/:id', checkAuth, userController.updateUser)
 userRouter.patch('/update-password', checkAuth, userController.updatePassword)
 
-export default  userRouter 
+export default userRouter
