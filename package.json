@@ -15,11 +15,16 @@
     "db:seed:undo": "npx sequelize db:seed:undo",
     "db:seed:undo:all": "npx sequelize db:seed:undo:all",
     "dev": "nodemon server.js",
-    "docker:swagger": "docker compose -f 'docker/docker-compose.swagger.yml' up",
-    "docker:db": "docker compose -f 'docker/docker-compose.db.yml' up",
-    "start": "NODE_ENV=production pm2 start server.js",
+    "docker:swagger": "docker compose -f 'docker/docker-compose.swagger.yml' up -d",
+    "docker:db": "docker compose -f 'docker/docker-compose.db.yml' up -d",
+    "build": "npm run clean && babel src --out-dir dist --presets=@babel/env --source-maps inline --copy-files",
+    "start": "NODE_ENV=production pm2 start dist/server.js",
     "lint": "eslint .",
-    "format": "prettier --write \"**/*.+(js|md|)\""
+    "format": "prettier --write \"**/*.+(js|md|)\"",
+    "test": "jest --verbose  --silent --detectOpenHandles",
+    "test:watch": "yarn test -- --watch",
+    "test:cover": "jest --coverage",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
@@ -30,6 +35,7 @@
     "jsonwebtoken": "^9.0.0",
     "mysql2": "^3.1.2",
     "nodemailer": "^6.9.1",
+    "pm2": "^5.2.2",
     "rand-token": "^1.0.1",
     "sequelize": "^6.28.0",
     "winston": "^3.8.2",

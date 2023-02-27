@@ -60,7 +60,7 @@ const confirmUser = async (req, res) => {
 		userConfirm.confirmed = true
 		await userConfirm.save()
 		res.status(200).json({
-			msg: ' User confirmed and created successfully',
+			msg: 'User confirmed and created successfully',
 		})
 	} catch (error) {
 		logger.error(error.errors)
