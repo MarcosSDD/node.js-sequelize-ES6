@@ -14,14 +14,14 @@
     "db:seed:all": "npx sequelize db:seed:all",
     "db:seed:undo": "npx sequelize db:seed:undo",
     "db:seed:undo:all": "npx sequelize db:seed:undo:all",
-    "dev": "nodemon server.js",
+    "dev": "nodemon src/server.js",
     "docker:swagger": "docker compose -f 'docker/docker-compose.swagger.yml' up -d",
     "docker:db": "docker compose -f 'docker/docker-compose.db.yml' up -d",
-    "build": "npm run clean && babel src --out-dir dist --presets=@babel/env --source-maps inline --copy-files",
+    "build": "yarn clean && babel src --out-dir dist --presets=@babel/env --source-maps inline --copy-files",
     "start": "NODE_ENV=production pm2 start dist/server.js",
     "lint": "eslint .",
     "format": "prettier --write \"**/*.+(js|md|)\"",
-    "test": "jest --verbose  --silent --detectOpenHandles",
+    "test": "jest --verbose  --silent --detectOpenHandles src/test",
     "test:watch": "yarn test -- --watch",
     "test:cover": "jest --coverage",
     "clean": "rm -rf dist"
@@ -42,6 +42,7 @@
     "winston-daily-rotate-file": "^4.7.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.21.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
     "@babel/plugin-transform-runtime": "^7.19.6",
     "@babel/preset-env": "^7.20.2",

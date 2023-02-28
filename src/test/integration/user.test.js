@@ -1,7 +1,7 @@
 import supertest from 'supertest'
 
 import { app } from '../../app.js'
-import server from '../../../server.js'
+import server from '../../server.js'
 import { sequelize } from '../../models/index.js'
 import generateJWT from '../../helpers/generateJWT'
 import { testHelp } from '../helpers'

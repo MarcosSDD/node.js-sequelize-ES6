@@ -1,7 +1,7 @@
 require('dotenv').config()
 require('@babel/register')
 /* eslint-disable no-console */
-const { app, logger } = require('./src/app')
+const { app, logger } = require('./app')
 
 const portServer = process.env.APP_PORT || 3000
 

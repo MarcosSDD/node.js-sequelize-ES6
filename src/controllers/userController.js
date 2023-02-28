@@ -8,14 +8,14 @@ import generateToken from '../helpers/generateToken'
 const registerUser = async (req, res) => {
 	const { name, surname, email, password } = req.body
 
-	// Validate User Exists
-	const userExists = await User.findOne({ where: { email } })
-	if (userExists) {
-		const error = new Error('User already exists')
-		logger.error(error)
-		return res.status(400).json({ msg: error.message })
-	}
 	try {
+		// Validate User Exists
+		const userExists = await User.findOne({ where: { email } })
+		if (userExists) {
+			const error = new Error('User already exists')
+			logger.error(error)
+			return res.status(400).json({ msg: error.message })
+		}
 		const saveUser = await User.create({
 			name,
 			surname,
@@ -40,7 +40,7 @@ const registerUser = async (req, res) => {
 			updatedAt: saveUser.updatedAt,
 		})
 	} catch (error) {
-		logger.error(error.errors)
+		logger.error(error.message)
 		return res.status(500).json({ error: error.message })
 	}
 }
@@ -48,14 +48,14 @@ const registerUser = async (req, res) => {
 const confirmUser = async (req, res) => {
 	const { token } = req.params
 
-	const userConfirm = await User.findOne({ where: { token } })
-
-	if (!userConfirm) {
-		const error = new Error('Invalid Token')
-		logger.error(error)
-		return res.status(401).json({ msg: error.message })
-	}
 	try {
+		const userConfirm = await User.findOne({ where: { token } })
+
+		if (!userConfirm) {
+			const error = new Error('Invalid Token')
+			logger.error(error)
+			return res.status(401).json({ msg: error.message })
+		}
 		userConfirm.token = null
 		userConfirm.confirmed = true
 		await userConfirm.save()
@@ -63,7 +63,7 @@ const confirmUser = async (req, res) => {
 			msg: 'User confirmed and created successfully',
 		})
 	} catch (error) {
-		logger.error(error.errors)
+		logger.error(error.message)
 		return res.status(500).json({ error: error.message })
 	}
 }
@@ -104,15 +104,15 @@ const loginUser = async (req, res) => {
 const forgetPassword = async (req, res) => {
 	const { email } = req.body
 
-	//Validate User Exists
-	const userLost = await User.findOne({ where: { email } })
-	if (!userLost) {
-		const error = new Error('Unregistered user')
-		logger.error(error)
-		return res.status(404).json({ msg: error.message })
-	}
-
 	try {
+		//Validate User Exists
+		const userLost = await User.findOne({ where: { email } })
+		if (!userLost) {
+			const error = new Error('Unregistered user')
+			logger.error(error)
+			return res.status(404).json({ msg: error.message })
+		}
+
 		userLost.token = generateToken()
 		await userLost.save()
 
@@ -128,7 +128,7 @@ const forgetPassword = async (req, res) => {
 			msg: 'Instructions have been sent to your email',
 		})
 	} catch (error) {
-		logger.error(error.errors)
+		logger.error(error.message)
 		return res.status(500).json({ error: error.message })
 	}
 }
@@ -151,21 +151,21 @@ const newPassword = async (req, res) => {
 	const { token } = req.params
 	const { password } = req.body
 
-	const userConfirm = await User.findOne({ where: { token } })
-
-	if (!userConfirm) {
-		const error = new Error('Invalid Token')
-		logger.error(error)
-		return res.status(401).json({ msg: error.message })
-	}
-
 	try {
+		const userConfirm = await User.findOne({ where: { token } })
+
+		if (!userConfirm) {
+			const error = new Error('Invalid Token')
+			logger.error(error)
+			return res.status(401).json({ msg: error.message })
+		}
+
 		userConfirm.token = null
 		userConfirm.password = password
 		await userConfirm.save()
 		res.status(200).json({ msg: 'Password changed successfully' })
 	} catch (error) {
-		logger.error(error.errors)
+		logger.error(error.message)
 		return res.status(500).json({ error: error.message })
 	}
 }
@@ -188,24 +188,24 @@ const updateUser = async (req, res) => {
 	const { id } = req.params
 	const { email } = req.body
 
-	const userToUp = await User.scope('sendDataUser').findByPk(id)
-	if (!userToUp) {
-		const error = new Error('No user found')
-		logger.error(error)
-		return res.status(404).json({ msg: error.message })
-	}
-
-	if (userToUp.email !== email) {
-		const emailExists = await User.findOne({ where: { email } })
-
-		if (emailExists) {
-			const error = new Error('That email is already in use')
-			logger.error(error)
-			return res.status(400).json({ msg: error.message })
-		}
-	}
-
 	try {
+		const userToUp = await User.scope('sendDataUser').findByPk(id)
+		if (!userToUp) {
+			const error = new Error('No user found')
+			logger.error(error)
+			return res.status(404).json({ msg: error.message })
+		}
+
+		if (userToUp.email !== email) {
+			const emailExists = await User.findOne({ where: { email } })
+
+			if (emailExists) {
+				const error = new Error('That email is already in use')
+				logger.error(error)
+				return res.status(400).json({ msg: error.message })
+			}
+		}
+
 		userToUp.name = req.body.name
 		userToUp.surname = req.body.surname
 		userToUp.birthday = req.body.birthday
@@ -216,7 +216,7 @@ const updateUser = async (req, res) => {
 		const userUp = await userToUp.save()
 		res.status(200).json(userUp)
 	} catch (error) {
-		logger.error(error.errors)
+		logger.error(error.message)
 		return res.status(500).json({ error: error.message })
 	}
 }
