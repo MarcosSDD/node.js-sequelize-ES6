@@ -180,3 +180,7 @@ yarn start
 ### API documentation
 
 To view the list of available endpoints and their specifications, run the corresponding docker and go to `http://localhost:8080/swagger/` in your browser.
+
+```console
+yarn docker:swagger
+```
